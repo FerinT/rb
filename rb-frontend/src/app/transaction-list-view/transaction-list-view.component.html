@@ -1,0 +1,23 @@
+<h3>Transaction Overview</h3>
+<hr>
+<div class="table-responsive mt-5">
+  <table *ngIf="transactionGroup !== undefined; else noData" class="table table-dark">
+    <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Amount (Euro)</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let transactionGroupDay of transactionGroup?.days">
+      <h5 class="text-black">{{transactionGroupDay?.id}}</h5>
+      <tr *ngFor="let transaction of transactionGroupDay?.transactions">
+        <td> <a [routerLink]="'/detail-view'" [state]="{ data: transaction}">{{transaction?.otherParty?.name || ""}}</a> </td>
+        <td> {{transaction?.amount}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #noData>
+    <em>No Transactions</em>
+    <i class="bi bi-search"></i>
+  </ng-template>
+</div>
