@@ -8,7 +8,7 @@ import {TransactionGroup} from "./transaction-group";
 })
 export class TransactionService {
 
-  private url = 'assets/transactions.json';
+  private url = 'http://localhost:8080/api/transactions';
 
   constructor(private httpClient: HttpClient) {
   }
