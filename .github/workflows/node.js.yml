@@ -12,8 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      working-directory: 'rb-frontend'
     strategy:
       matrix:
         node-version: [16.x]
@@ -28,9 +26,14 @@ jobs:
         cache-dependency-path: 'rb-frontend/package-lock.json'
 
     - run: npm ci
+      working-directory: 'rb-frontend'
     - run: npm install
+      working-directory: 'rb-frontend'
     - run: npm run build
+      working-directory: 'rb-frontend'
     - run: npm test
+      working-directory: 'rb-frontend'
     - run: npm run lint
+      working-directory: 'rb-frontend'
       env:
         CI: true
