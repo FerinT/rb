@@ -3,13 +3,11 @@ import {getTestBed, TestBed} from '@angular/core/testing';
 import {TransactionService} from './transaction-service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {TransactionGroup} from "./transaction-group";
-import {Observable} from "rxjs";
 
 describe('TransactionService', () => {
   let injector: TestBed;
   let service: TransactionService;
   let httpMock: HttpTestingController;
-  let spy: any;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,15 +23,21 @@ describe('TransactionService', () => {
     httpMock.verify();
   });
 
-  describe('#getTransactions', () => {
-    it('should return an Observable<User[]>', () => {
-      spy = spyOn(service, 'getTransactions').and.returnValue(new Observable<TransactionGroup>());
-      let transactions = service.getTransactions().subscribe(TransactionService => {
-        console.log(TransactionService);
-      });
+  it("should return an Observable<TransactionGroup>", () => {
+    let grp: TransactionGroup = {
+      days: [{
+        id: '', transactions: []
+      }]
+    };
 
-      expect(transactions).toBeTruthy();
+    service.getTransactions().subscribe(transactionGroup => {
+      expect(transactionGroup.days.length).toBe(1);
+      expect(transactionGroup).toEqual(grp);
     });
-  });
 
+    const req = httpMock.expectOne('http://localhost:8080/api/transactions');
+    expect(req.request.method).toBe("GET");
+    req.flush(grp);
+
+  })
 });
